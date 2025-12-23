@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Platform Governance Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header h1 { color: #0078d4; margin-bottom: 5px; font-size: 28px; }
+        .header p { color: #666; font-size: 14px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; }
+        .tab-btn { padding: 12px 20px; background: white; border: 2px solid #ddd; border-radius: 5px 5px 0 0; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .tab-btn.active { background: #0078d4; color: white; border-color: #0078d4; }
+        .tab-content { display: none; background: white; padding: 20px; border-radius: 0 10px 10px 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .tab-content.active { display: block; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid #0078d4; }
+        .card h3 { color: #0078d4; margin-bottom: 15px; font-size: 16px; }
+        .card-stat { margin: 10px 0; font-size: 13px; }
+        .card-stat strong { color: #333; display: inline-block; width: 150px; }
+        .list { list-style: none; }
+        .list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+        .list li:last-child { border: none; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-error { background: #f8d7da; color: #721c24; }
+        .badge-info { background: #d1ecf1; color: #0c5460; }
+        .example { background: #f9f9f9; padding: 15px; border-radius: 5px; border-left: 3px solid #0078d4; margin: 10px 0; font-family: monospace; font-size: 12px; }
+        .table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .table th { background: #f5f5f5; padding: 10px; text-align: left; font-weight: bold; border-bottom: 2px solid #ddd; font-size: 12px; }
+        .table td { padding: 10px; border-bottom: 1px solid #ddd; font-size: 12px; }
+        .checklist { list-style: none; }
+        .checklist li { padding: 8px 0; }
+        .checklist input { margin-right: 8px; }
+        .metric { background: linear-gradient(135deg, #0078d4, #005a9e); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .metric-value { font-size: 32px; font-weight: bold; }
+        .metric-label { font-size: 12px; opacity: 0.9; margin-top: 5px; }
+        .section { margin: 20px 0; }
+        .section h2 { color: #0078d4; margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid #0078d4; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Power Platform Governance Dashboard</h1>
+            <p>Step 3 Training: Governance Patterns & Reusable Components</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('naming')">Naming Standards</button>
+            <button class="tab-btn" onclick="switchTab('structure')">Project Structure</button>
+            <button class="tab-btn" onclick="switchTab('components')">Components</button>
+            <button class="tab-btn" onclick="switchTab('standards')">Code Standards</button>
+            <button class="tab-btn" onclick="switchTab('checklist')">Deployment Checklist</button>
+        </div>
+
+        <!-- Tab 1: Naming Standards -->
+        <div class="tab-content active" id="naming">
+            <div class="section">
+                <h2>Power Apps Naming Conventions</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>App Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> [Department]_[Purpose]_App</div>
+                        <div class="example">HR_EmployeeOnboarding_App</div>
+                        <div class="example">Finance_ExpenseReporting_App</div>
+                        <div class="example">Sales_PipelineManagement_App</div>
+                    </div>
+                    <div class="card">
+                        <h3>Screen Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> scr_[FunctionName]</div>
+                        <div class="example">scr_Welcome</div>
+                        <div class="example">scr_ExpenseForm</div>
+                        <div class="example">scr_Dashboard</div>
+                    </div>
+                    <div class="card">
+                        <h3>Control Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> [Type]_[Purpose]</div>
+                        <div class="example">btn_Submit</div>
+                        <div class="example">txt_EmployeeName</div>
+                        <div class="example">drp_Category</div>
+                    </div>
+                    <div class="card">
+                        <h3>Variable Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> var_[DescriptiveName]</div>
+                        <div class="example">var_SelectedEmployee</div>
+                        <div class="example">var_TotalAmount</div>
+                        <div class="example">var_IsFormValid</div>
+                    </div>
+                    <div class="card">
+                        <h3>Collection Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> col_[DataType]</div>
+                        <div class="example">col_Expenses</div>
+                        <div class="example">col_Approvers</div>
+                        <div class="example">col_Categories</div>
+                    </div>
+                    <div class="card">
+                        <h3>Component Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> cmp_[ComponentName]</div>
+                        <div class="example">cmp_DatePicker</div>
+                        <div class="example">cmp_ApprovalCard</div>
+                        <div class="example">cmp_ErrorMessage</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Power Automate Naming Conventions</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Flow Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> [Department] - [Process] - v[Version]</div>
+                        <div class="example">HR - Employee Onboarding - v1.0</div>
+                        <div class="example">Finance - Expense Approval - v2.1</div>
+                        <div class="example">Sales - Lead Notification - v1.5</div>
+                    </div>
+                    <div class="card">
+                        <h3>Action Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> [Seq] - [Type] - [Description]</div>
+                        <div class="example">1 - Trigger - New Response Submitted</div>
+                        <div class="example">2 - Action - Initialize Variables</div>
+                        <div class="example">3 - Condition - Check Approval</div>
+                    </div>
+                    <div class="card">
+                        <h3>Variable Names</h3>
+                        <div class="card-stat"><strong>Format:</strong> var[Type]_[Name]</div>
+                        <div class="example">varStr_EmployeeName</div>
+                        <div class="example">varNum_TotalAmount</div>
+                        <div class="example">varBool_IsApproved</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Project Structure -->
+        <div class="tab-content" id="structure">
+            <div class="section">
+                <h2>Power Apps Project Structure</h2>
+                <div class="example" style="text-align: left; white-space: pre-wrap;">
+PowerApps/
+├── Documentation/
+│   ├── README.md
+│   ├── UserGuide.md
+│   └── TechnicalSpec.md
+├── Flows/
+│   ├── AP-ExpenseApproval/
+│   └── AP-EmailNotification/
+├── Components/
+│   ├── cmp_DatePicker/
+│   ├── cmp_ApprovalCard/
+│   └── cmp_ErrorMessage/
+├── Assets/
+│   ├── Images/
+│   ├── Icons/
+│   └── Styles.json
+├── Tests/
+│   ├── UnitTests.md
+│   └── IntegrationTests.md
+└── Backups/
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Power Automate Flow Structure</h2>
+                <div class="example" style="text-align: left; white-space: pre-wrap;">
+Flows/
+├── Approved Flows/
+│   ├── HR-EmployeeOnboarding-v1.0/
+│   └── Finance-ExpenseApproval-v2.1/
+├── In Development/
+│   ├── Marketing-Campaign-v0.1/
+│   └── Sales-Qualification-v0.2/
+├── Templates/
+│   ├── ApprovalTemplate.json
+│   ├── NotificationTemplate.json
+│   └── ErrorHandlingTemplate.json
+└── Documentation/
+    ├── FlowPatterns.md
+    └── BestPractices.md
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Component Library Structure</h2>
+                <div class="example" style="text-align: left; white-space: pre-wrap;">
+ComponentLibrary/
+├── Core Components/
+│   ├── cmp_Button/
+│   ├── cmp_TextInput/
+│   └── cmp_Dropdown/
+├── Business Components/
+│   ├── cmp_ApprovalCard/
+│   └── cmp_ExpenseForm/
+├── Utility Components/
+│   ├── cmp_ErrorMessage/
+│   └── cmp_DatePicker/
+├── Formulas/
+│   ├── ValidationFormulas.md
+│   └── CalculationFormulas.md
+├── Styles/
+│   ├── ColorPalette.json
+│   └── Theming.md
+└── Documentation/
+    ├── ComponentCatalog.md
+    └── UsageGuide.md
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Components -->
+        <div class="tab-content" id="components">
+            <div class="section">
+                <h2>Reusable Components</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>🎨 UI Components</h3>
+                        <ul class="list">
+                            <li><span class="badge badge-success">Core</span> cmp_Button</li>
+                            <li><span class="badge badge-success">Core</span> cmp_TextInput</li>
+                            <li><span class="badge badge-success">Core</span> cmp_Dropdown</li>
+                            <li><span class="badge badge-success">Core</span> cmp_DatePicker</li>
+                            <li><span class="badge badge-info">Utility</span> cmp_Modal</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>📊 Business Components</h3>
+                        <ul class="list">
+                            <li><span class="badge badge-warning">Business</span> cmp_ApprovalCard</li>
+                            <li><span class="badge badge-warning">Business</span> cmp_ExpenseForm</li>
+                            <li><span class="badge badge-warning">Business</span> cmp_DataTable</li>
+                            <li><span class="badge badge-warning">Business</span> cmp_Dashboard</li>
+                            <li><span class="badge badge-info">Utility</span> cmp_SearchBox</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>⚙️ Utility Components</h3>
+                        <ul class="list">
+                            <li><span class="badge badge-info">Utility</span> cmp_ErrorMessage</li>
+                            <li><span class="badge badge-info">Utility</span> cmp_ConfirmDialog</li>
+                            <li><span class="badge badge-info">Utility</span> cmp_LoadingSpinner</li>
+                            <li><span class="badge badge-info">Utility</span> cmp_EmptyState</li>
+                            <li><span class="badge badge-info">Utility</span> cmp_Toast</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Component Template</h2>
+                <div class="card">
+                    <h3>cmp_DatePicker Example</h3>
+                    <table class="table">
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
+                            <td>prop_DefaultValue</td>
+                            <td>Date</td>
+                            <td>Initial date value</td>
+                            <td>Today()</td>
+                        </tr>
+                        <tr>
+                            <td>prop_MinDate</td>
+                            <td>Date</td>
+                            <td>Minimum selectable date</td>
+                            <td>1900-01-01</td>
+                        </tr>
+                        <tr>
+                            <td>prop_MaxDate</td>
+                            <td>Date</td>
+                            <td>Maximum selectable date</td>
+                            <td>2100-12-31</td>
+                        </tr>
+                        <tr>
+                            <td>prop_IsRequired</td>
+                            <td>Boolean</td>
+                            <td>Validation required</td>
+                            <td>false</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Code Standards -->
+        <div class="tab-content" id="standards">
+            <div class="section">
+                <h2>Power Apps Formula Best Practices</h2>
+                <div class="grid">
+                    <div class="card" style="border-left-color: #107c10;">
+                        <h3>✅ Good Practice</h3>
+                        <div class="example">// Use meaningful names
+var_TotalExpense = Sum(col_Expenses, Amount)
+
+// Break complex formulas
+var_IsValid = And(
+    Name.Value <> "",
+    IsNumeric(Amount.Value),
+    Amount.Value > 0
+)</div>
+                    </div>
+                    <div class="card" style="border-left-color: #e81123;">
+                        <h3>❌ Anti-Patterns</h3>
+                        <div class="example">// Cryptic names
+x = Sum(a, b)
+
+// Deeply nested
+If(a,If(b,If(c,d,e),f),g)
+
+// No comments
+Filter(col, f1=x And f2=y)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Code Style Guidelines</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Naming</h3>
+                        <ul class="list">
+                            <li>✅ Use PascalCase for functions</li>
+                            <li>✅ Use snake_case for variables</li>
+                            <li>✅ Use descriptive names</li>
+                            <li>❌ Avoid single letters</li>
+                            <li>❌ Avoid abbreviations</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Formatting</h3>
+                        <ul class="list">
+                            <li>✅ Consistent indentation (2-4 spaces)</li>
+                            <li>✅ Break long lines at 80 chars</li>
+                            <li>✅ Group related code</li>
+                            <li>✅ Use whitespace for clarity</li>
+                            <li>❌ Don't use tabs</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Documentation</h3>
+                        <ul class="list">
+                            <li>✅ Comment complex logic</li>
+                            <li>✅ Document parameters</li>
+                            <li>✅ Explain why, not what</li>
+                            <li>✅ Keep comments updated</li>
+                            <li>❌ Don't over-comment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: Checklist -->
+        <div class="tab-content" id="checklist">
+            <div class="section">
+                <h2>Pre-Deployment Checklist</h2>
+                <div class="card">
+                    <h3>Before Publishing</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox"> Naming standards followed</li>
+                        <li><input type="checkbox"> Code reviewed by peer</li>
+                        <li><input type="checkbox"> Unit tests pass</li>
+                        <li><input type="checkbox"> Integration tests pass</li>
+                        <li><input type="checkbox"> Performance acceptable (&lt;3s load)</li>
+                        <li><input type="checkbox"> Documentation complete</li>
+                        <li><input type="checkbox"> Security reviewed</li>
+                        <li><input type="checkbox"> Accessibility verified</li>
+                        <li><input type="checkbox"> Component library updated</li>
+                        <li><input type="checkbox"> Deployment plan ready</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Quality Metrics</h2>
+                <div class="grid">
+                    <div class="metric">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">Test Coverage Target</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">&lt;3s</div>
+                        <div class="metric-label">Load Time Target</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">&gt;99%</div>
+                        <div class="metric-label">Flow Success Rate</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">&lt;1%</div>
+                        <div class="metric-label">Error Rate Target</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Testing Requirements</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Unit Tests</h3>
+                        <ul class="list">
+                            <li>✅ Component renders</li>
+                            <li>✅ Properties validated</li>
+                            <li>✅ Formulas calculate</li>
+                            <li>✅ Edge cases handled</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Integration Tests</h3>
+                        <ul class="list">
+                            <li>✅ Components work together</li>
+                            <li>✅ Data flows correctly</li>
+                            <li>✅ External connections work</li>
+                            <li>✅ Error paths execute</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Performance Tests</h3>
+                        <ul class="list">
+                            <li>✅ Load time acceptable</li>
+                            <li>✅ Formulas respond quickly</li>
+                            <li>✅ No infinite loops</li>
+                            <li>✅ Memory usage reasonable</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

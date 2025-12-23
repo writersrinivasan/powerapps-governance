@@ -1,0 +1,390 @@
+{
+  "namingStandards": {
+    "version": "1.0.0",
+    "description": "Power Platform Naming Standards Examples",
+    "powerApps": {
+      "appNaming": {
+        "format": "[Department]_[Purpose]_App",
+        "rules": [
+          "Use department abbreviation (HR, Finance, Sales, etc.)",
+          "Describe the app's primary purpose",
+          "Always end with '_App'",
+          "Use PascalCase for compound words",
+          "No special characters except underscore"
+        ],
+        "examples": [
+          {
+            "name": "HR_EmployeeOnboarding_App",
+            "department": "Human Resources",
+            "purpose": "Employee onboarding workflow",
+            "usage": "New hire onboarding process"
+          },
+          {
+            "name": "Finance_ExpenseReporting_App",
+            "department": "Finance",
+            "purpose": "Expense report submission and approval",
+            "usage": "Employee expense tracking"
+          },
+          {
+            "name": "Sales_PipelineManagement_App",
+            "department": "Sales",
+            "purpose": "Sales pipeline and opportunity tracking",
+            "usage": "Sales team pipeline visibility"
+          },
+          {
+            "name": "IT_AssetInventory_App",
+            "department": "IT",
+            "purpose": "IT asset tracking and management",
+            "usage": "Asset lifecycle management"
+          },
+          {
+            "name": "Ops_ProjectTracking_App",
+            "department": "Operations",
+            "purpose": "Project tracking and status",
+            "usage": "Project management"
+          }
+        ]
+      },
+      "screenNaming": {
+        "format": "scr_[FunctionName]",
+        "rules": [
+          "Always start with 'scr_' prefix",
+          "Use descriptive function names",
+          "Use PascalCase for compound words",
+          "Keep names concise (max 30 characters)",
+          "Group related screens with naming convention"
+        ],
+        "examples": [
+          {
+            "name": "scr_Welcome",
+            "purpose": "Splash/welcome screen",
+            "app": "Any app"
+          },
+          {
+            "name": "scr_MainMenu",
+            "purpose": "Main navigation menu",
+            "app": "Any app"
+          },
+          {
+            "name": "scr_ExpenseForm",
+            "purpose": "Expense entry form",
+            "app": "HR_EmployeeOnboarding_App"
+          },
+          {
+            "name": "scr_ApprovalWorkflow",
+            "purpose": "Approval queue and workflow",
+            "app": "Finance_ExpenseReporting_App"
+          },
+          {
+            "name": "scr_DashboardSummary",
+            "purpose": "Dashboard with summary metrics",
+            "app": "Sales_PipelineManagement_App"
+          },
+          {
+            "name": "scr_DetailView",
+            "purpose": "Detailed record view",
+            "app": "IT_AssetInventory_App"
+          },
+          {
+            "name": "scr_Settings",
+            "purpose": "User preferences and settings",
+            "app": "Any app"
+          },
+          {
+            "name": "scr_Help",
+            "purpose": "Help and documentation",
+            "app": "Any app"
+          }
+        ]
+      },
+      "controlNaming": {
+        "format": "[ControlType]_[Purpose]",
+        "rules": [
+          "Use control type prefix (btn, txt, gal, etc.)",
+          "Describe the control's purpose",
+          "Use camelCase after underscore",
+          "Be specific and descriptive"
+        ],
+        "controlTypes": [
+          {
+            "abbreviation": "btn",
+            "name": "Button",
+            "examples": ["btn_Submit", "btn_Cancel", "btn_Save", "btn_Delete"]
+          },
+          {
+            "abbreviation": "txt",
+            "name": "Text Input",
+            "examples": ["txt_FirstName", "txt_Email", "txt_Comments"]
+          },
+          {
+            "abbreviation": "lbl",
+            "name": "Label",
+            "examples": ["lbl_Title", "lbl_Instructions", "lbl_ErrorMessage"]
+          },
+          {
+            "abbreviation": "gal",
+            "name": "Gallery",
+            "examples": ["gal_Expenses", "gal_Approvers", "gal_Results"]
+          },
+          {
+            "abbreviation": "drp",
+            "name": "Dropdown",
+            "examples": ["drp_Department", "drp_Category", "drp_Status"]
+          },
+          {
+            "abbreviation": "cal",
+            "name": "Calendar/Date Picker",
+            "examples": ["cal_StartDate", "cal_EndDate", "cal_DueDate"]
+          },
+          {
+            "abbreviation": "chk",
+            "name": "Checkbox",
+            "examples": ["chk_TermsAccepted", "chk_IsActive", "chk_IsPriority"]
+          },
+          {
+            "abbreviation": "rad",
+            "name": "Radio Button",
+            "examples": ["rad_PaymentMethod", "rad_Frequency", "rad_Priority"]
+          },
+          {
+            "abbreviation": "img",
+            "name": "Image",
+            "examples": ["img_Logo", "img_Thumbnail", "img_Banner"]
+          },
+          {
+            "abbreviation": "shp",
+            "name": "Shape",
+            "examples": ["shp_Divider", "shp_Background", "shp_Highlight"]
+          },
+          {
+            "abbreviation": "cnt",
+            "name": "Container",
+            "examples": ["cnt_Header", "cnt_Footer", "cnt_Sidebar"]
+          },
+          {
+            "abbreviation": "frm",
+            "name": "Form",
+            "examples": ["frm_ExpenseForm", "frm_EmployeeForm"]
+          }
+        ]
+      },
+      "variableNaming": {
+        "format": "var_[DescriptiveName]",
+        "rules": [
+          "Always start with 'var_' prefix",
+          "Use descriptive names",
+          "Use camelCase for compound words",
+          "Name based on purpose or content",
+          "Indicate data type where helpful"
+        ],
+        "examples": [
+          {
+            "name": "var_SelectedEmployee",
+            "type": "record",
+            "purpose": "Currently selected employee record"
+          },
+          {
+            "name": "var_TotalAmount",
+            "type": "number",
+            "purpose": "Total expense amount"
+          },
+          {
+            "name": "var_IsFormValid",
+            "type": "boolean",
+            "purpose": "Form validation status"
+          },
+          {
+            "name": "var_CurrentUser",
+            "type": "record",
+            "purpose": "Current logged-in user"
+          },
+          {
+            "name": "var_SelectedDate",
+            "type": "date",
+            "purpose": "Currently selected date"
+          },
+          {
+            "name": "var_ErrorMessage",
+            "type": "text",
+            "purpose": "Error message to display"
+          },
+          {
+            "name": "var_IsLoading",
+            "type": "boolean",
+            "purpose": "Data loading status"
+          },
+          {
+            "name": "var_FilterCriteria",
+            "type": "record",
+            "purpose": "Current filter selection"
+          }
+        ]
+      },
+      "collectionNaming": {
+        "format": "col_[DataType]",
+        "rules": [
+          "Always start with 'col_' prefix",
+          "Name based on data type or content",
+          "Use plural form for multiple items",
+          "Use PascalCase for compound words"
+        ],
+        "examples": [
+          {
+            "name": "col_Expenses",
+            "content": "Expense records",
+            "source": "SharePoint list"
+          },
+          {
+            "name": "col_Approvers",
+            "content": "Approval team members",
+            "source": "Azure AD group"
+          },
+          {
+            "name": "col_Categories",
+            "content": "Expense categories",
+            "source": "Lookup table"
+          },
+          {
+            "name": "col_EmployeeData",
+            "content": "Employee information",
+            "source": "HR database"
+          },
+          {
+            "name": "col_FilteredResults",
+            "content": "Filtered data results",
+            "source": "Dynamic formula"
+          },
+          {
+            "name": "col_SortedItems",
+            "content": "Sorted collection",
+            "source": "SortByColumns formula"
+          }
+        ]
+      }
+    },
+    "powerAutomate": {
+      "flowNaming": {
+        "format": "[Department]_[Process]_Flow",
+        "rules": [
+          "Use department or business area prefix",
+          "Describe the process clearly",
+          "End with '_Flow'",
+          "Use PascalCase for compound words",
+          "Keep under 100 characters"
+        ],
+        "examples": [
+          {
+            "name": "HR_EmployeeOnboarding_Flow",
+            "trigger": "Manual trigger",
+            "purpose": "Handle new employee onboarding"
+          },
+          {
+            "name": "Finance_ExpenseApproval_Flow",
+            "trigger": "Item created in SharePoint",
+            "purpose": "Route expense reports for approval"
+          },
+          {
+            "name": "Sales_LeadNotification_Flow",
+            "trigger": "New lead created",
+            "purpose": "Notify sales team of new leads"
+          },
+          {
+            "name": "IT_IncidentEscalation_Flow",
+            "trigger": "Item status changes",
+            "purpose": "Escalate critical incidents"
+          },
+          {
+            "name": "Ops_ProjectStatusUpdate_Flow",
+            "trigger": "Weekly schedule",
+            "purpose": "Collect and summarize project status"
+          }
+        ]
+      },
+      "actionNaming": {
+        "rules": [
+          "Use descriptive action names",
+          "Include variable assignment context",
+          "Group related actions with comments"
+        ],
+        "examples": [
+          {
+            "name": "Get expense details from SharePoint",
+            "type": "Get item",
+            "context": "Retrieve the submitted expense record"
+          },
+          {
+            "name": "Check approval rules",
+            "type": "Condition",
+            "context": "Determine if approval is needed"
+          },
+          {
+            "name": "Send approval email",
+            "type": "Send email",
+            "context": "Route to appropriate approver"
+          },
+          {
+            "name": "Update expense status",
+            "type": "Update item",
+            "context": "Mark as approved or rejected"
+          }
+        ]
+      },
+      "variableNaming": {
+        "format": "var_[DescriptiveName]",
+        "rules": [
+          "Use 'var_' prefix",
+          "Clearly indicate data type",
+          "Use consistent casing"
+        ],
+        "examples": [
+          "var_ExpenseAmount",
+          "var_ApproverEmail",
+          "var_IsHighValue",
+          "var_ApprovalDeadline",
+          "var_SubmitterName"
+        ]
+      }
+    },
+    "powerVirtualAgents": {
+      "topicNaming": {
+        "format": "[Purpose] [Details]",
+        "rules": [
+          "Use clear, user-friendly names",
+          "Describe what the topic does",
+          "Use PascalCase"
+        ],
+        "examples": [
+          "Handle Expense Report Submission",
+          "Employee Onboarding Checklist",
+          "IT Support Ticket Creation",
+          "Generate Sales Report"
+        ]
+      },
+      "entityNaming": {
+        "format": "[EntityType]",
+        "examples": [
+          "Department",
+          "ExpenseCategory",
+          "EmployeeStatus",
+          "Priority"
+        ]
+      }
+    },
+    "bestPractices": {
+      "naming": [
+        "✓ Be consistent across all solutions",
+        "✓ Use meaningful, descriptive names",
+        "✓ Follow the established convention",
+        "✓ Document naming standards for team",
+        "✓ Review naming in code reviews"
+      ],
+      "antiPatterns": [
+        "✗ Don't use cryptic abbreviations",
+        "✗ Don't mix naming conventions",
+        "✗ Don't use numbers as primary identifiers",
+        "✗ Don't ignore naming standards",
+        "✗ Don't create ambiguous names"
+      ]
+    }
+  }
+}
