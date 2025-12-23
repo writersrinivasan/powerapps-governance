@@ -1,0 +1,259 @@
+{
+  "powerAutomateFlowTemplate": {
+    "name": "Standard Flow Template",
+    "version": "1.0.0",
+    "created": "2024",
+    "author": "Your Name",
+    "description": "Template for creating a standardized Power Automate flow",
+    "flowMetadata": {
+      "flowType": "Cloud flow",
+      "category": "Approval & Request",
+      "description": "Standard approval workflow template",
+      "triggerType": "Item created"
+    },
+    "structure": {
+      "trigger": {
+        "type": "Item created in SharePoint",
+        "description": "Trigger when new item is created",
+        "site": "[YourSite]",
+        "list": "[YourList]"
+      },
+      "actions": [
+        {
+          "step": 1,
+          "name": "Get item details",
+          "type": "Get item",
+          "description": "Retrieve the full item details",
+          "outputs": [
+            "Title",
+            "Description",
+            "Submitter",
+            "Amount"
+          ]
+        },
+        {
+          "step": 2,
+          "name": "Get approver from Azure AD",
+          "type": "Get user profile",
+          "description": "Get approver information",
+          "input": "Item Manager"
+        },
+        {
+          "step": 3,
+          "name": "Check approval threshold",
+          "type": "Condition",
+          "description": "Determine if approval is needed",
+          "condition": "Amount > 1000",
+          "trueActions": [
+            {
+              "step": "3a",
+              "name": "Send approval email",
+              "type": "Send approval"
+            }
+          ],
+          "falseActions": [
+            {
+              "step": "3b",
+              "name": "Auto-approve low value",
+              "type": "Update item"
+            }
+          ]
+        },
+        {
+          "step": 4,
+          "name": "Wait for approval response",
+          "type": "Wait for approval",
+          "description": "Wait up to 5 days for approval",
+          "timeout": 5
+        },
+        {
+          "step": 5,
+          "name": "Check approval decision",
+          "type": "Condition",
+          "description": "Handle approval or rejection",
+          "condition": "Approval outcome = Approved"
+        },
+        {
+          "step": 6,
+          "name": "Update approval status",
+          "type": "Update item",
+          "description": "Set item status to Approved/Rejected"
+        },
+        {
+          "step": 7,
+          "name": "Send notification email",
+          "type": "Send email",
+          "description": "Notify submitter of decision"
+        },
+        {
+          "step": 8,
+          "name": "Log flow completion",
+          "type": "Log to application insights",
+          "description": "Log flow execution for monitoring"
+        }
+      ]
+    },
+    "variables": {
+      "initialization": [
+        {
+          "name": "var_ApprovalDeadline",
+          "type": "String",
+          "value": "addDays(utcNow(), 5)"
+        },
+        {
+          "name": "var_ApprovalThreshold",
+          "type": "Float",
+          "value": 1000.00
+        },
+        {
+          "name": "var_ApprovalStatus",
+          "type": "String",
+          "value": "Pending"
+        }
+      ]
+    },
+    "errorHandling": {
+      "description": "Comprehensive error handling strategy",
+      "approach": "Try-Catch pattern with logging",
+      "actions": [
+        {
+          "name": "Log error details",
+          "description": "Capture error information",
+          "fields": [
+            "Error message",
+            "Error code",
+            "Step number",
+            "Timestamp",
+            "Input data"
+          ]
+        },
+        {
+          "name": "Notify administrator",
+          "description": "Send error alert to admin",
+          "condition": "Error is critical"
+        },
+        {
+          "name": "Retry logic",
+          "description": "Attempt retry for transient errors",
+          "maxRetries": 3,
+          "backoffInterval": "exponential"
+        },
+        {
+          "name": "Rollback changes",
+          "description": "Undo changes on failure",
+          "condition": "Transaction failed"
+        }
+      ]
+    },
+    "notifications": [
+      {
+        "name": "Approval request email",
+        "recipient": "@{body('Get_approver_from_Azure_AD')['mail']}",
+        "subject": "Approval Needed: @{triggerBody()['Title']}",
+        "template": "approval-request-template.html"
+      },
+      {
+        "name": "Approval complete notification",
+        "recipient": "@{triggerBody()['Author']['Email']}",
+        "subject": "Request Approved: @{triggerBody()['Title']}",
+        "template": "approval-complete-template.html",
+        "condition": "Approval outcome = Approved"
+      },
+      {
+        "name": "Rejection notification",
+        "recipient": "@{triggerBody()['Author']['Email']}",
+        "subject": "Request Rejected: @{triggerBody()['Title']}",
+        "template": "rejection-template.html",
+        "condition": "Approval outcome = Rejected"
+      },
+      {
+        "name": "Error notification",
+        "recipient": "admin@yourdomain.com",
+        "subject": "Flow Error Alert: Approval Workflow",
+        "template": "error-alert-template.html",
+        "condition": "Flow failed"
+      }
+    ],
+    "dataConnectors": [
+      {
+        "name": "SharePoint",
+        "type": "Trigger and actions",
+        "usage": "Read/write item data"
+      },
+      {
+        "name": "Azure AD",
+        "type": "Action",
+        "usage": "Get user and approver information"
+      },
+      {
+        "name": "Office 365 Outlook",
+        "type": "Action",
+        "usage": "Send email notifications"
+      },
+      {
+        "name": "Application Insights",
+        "type": "Action",
+        "usage": "Log flow execution and errors"
+      }
+    ],
+    "testingRequirements": {
+      "unitTests": [
+        "Trigger fires on item creation",
+        "Correct approver identified",
+        "Threshold logic works correctly",
+        "Approval request sent",
+        "Timeout handled correctly"
+      ],
+      "integrationTests": [
+        "Full approval workflow",
+        "Rejection workflow",
+        "Auto-approval workflow",
+        "Error handling and retry"
+      ],
+      "performanceRequirements": {
+        "maxExecutionTime": "30 seconds",
+        "errorRate": "< 0.1%"
+      }
+    },
+    "monitoring": {
+      "metrics": [
+        "Flow run count",
+        "Success rate",
+        "Average execution time",
+        "Error rate"
+      ],
+      "alerts": [
+        {
+          "name": "High error rate",
+          "threshold": "Error rate > 1%",
+          "action": "Notify administrator"
+        },
+        {
+          "name": "Slow execution",
+          "threshold": "Execution time > 60 seconds",
+          "action": "Log and investigate"
+        }
+      ]
+    },
+    "documentation": {
+      "description": "Complete flow documentation",
+      "sections": [
+        "Flow overview and purpose",
+        "Trigger and action descriptions",
+        "Variable definitions",
+        "Error handling approach",
+        "Testing instructions",
+        "Deployment steps",
+        "Troubleshooting guide"
+      ]
+    },
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2024",
+        "changes": "Initial release",
+        "author": "Your Name"
+      }
+    ]
+  }
+}

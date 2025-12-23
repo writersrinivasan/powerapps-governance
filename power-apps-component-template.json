@@ -1,0 +1,183 @@
+{
+  "powerAppsComponentTemplate": {
+    "name": "Sample Reusable Component",
+    "version": "1.0.0",
+    "created": "2024",
+    "author": "Your Name",
+    "description": "Template for creating a reusable Power Apps component",
+    "componentMetadata": {
+      "componentName": "FormInput",
+      "category": "Forms",
+      "subcategory": "Input Controls",
+      "description": "Reusable text input component with validation",
+      "accessibility": "WCAG 2.1 AA compliant"
+    },
+    "properties": {
+      "input": [
+        {
+          "propertyName": "Label",
+          "type": "String",
+          "description": "Display label for the input field",
+          "required": true,
+          "defaultValue": "Input Label"
+        },
+        {
+          "propertyName": "Value",
+          "type": "Any",
+          "description": "Current value of the input",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "propertyName": "Required",
+          "type": "Boolean",
+          "description": "Whether the field is required",
+          "required": false,
+          "defaultValue": false
+        },
+        {
+          "propertyName": "Type",
+          "type": "String",
+          "description": "Input type: text, number, email, password, date",
+          "required": false,
+          "defaultValue": "text"
+        },
+        {
+          "propertyName": "Placeholder",
+          "type": "String",
+          "description": "Placeholder text",
+          "required": false,
+          "defaultValue": ""
+        },
+        {
+          "propertyName": "MaxLength",
+          "type": "Number",
+          "description": "Maximum character length",
+          "required": false,
+          "defaultValue": 255
+        },
+        {
+          "propertyName": "ReadOnly",
+          "type": "Boolean",
+          "description": "Whether field is read-only",
+          "required": false,
+          "defaultValue": false
+        }
+      ],
+      "output": [
+        {
+          "propertyName": "ValidationError",
+          "type": "String",
+          "description": "Error message if validation fails"
+        },
+        {
+          "propertyName": "IsValid",
+          "type": "Boolean",
+          "description": "Whether current value is valid"
+        }
+      ]
+    },
+    "behaviors": [
+      {
+        "eventName": "OnChange",
+        "description": "Triggered when input value changes",
+        "parameters": ["NewValue"],
+        "example": "Update parent component with new value"
+      },
+      {
+        "eventName": "OnBlur",
+        "description": "Triggered when input loses focus",
+        "parameters": [],
+        "example": "Validate input value"
+      },
+      {
+        "eventName": "OnFocus",
+        "description": "Triggered when input gains focus",
+        "parameters": [],
+        "example": "Clear error message"
+      }
+    ],
+    "validationRules": [
+      {
+        "ruleName": "RequiredField",
+        "condition": "Required && Value = \"\"",
+        "errorMessage": "This field is required"
+      },
+      {
+        "ruleName": "MinLength",
+        "condition": "Length(Value) < MinLength",
+        "errorMessage": "Minimum length not met"
+      },
+      {
+        "ruleName": "MaxLength",
+        "condition": "Length(Value) > MaxLength",
+        "errorMessage": "Maximum length exceeded"
+      },
+      {
+        "ruleName": "EmailFormat",
+        "condition": "Type = \"email\" && !IsEmail(Value)",
+        "errorMessage": "Invalid email format"
+      },
+      {
+        "ruleName": "NumberFormat",
+        "condition": "Type = \"number\" && !IsNumber(Value)",
+        "errorMessage": "Invalid number format"
+      }
+    ],
+    "styleConfiguration": {
+      "colors": {
+        "backgroundColor": "White",
+        "textColor": "#333333",
+        "labelColor": "#0078d4",
+        "borderColor": "#cccccc",
+        "errorColor": "#e81123",
+        "focusColor": "#0078d4"
+      },
+      "spacing": {
+        "padding": "12px",
+        "margin": "8px",
+        "labelMargin": "8px 0px 4px 0px"
+      },
+      "typography": {
+        "fontSize": "14px",
+        "labelFontSize": "12px",
+        "fontWeight": "normal",
+        "labelFontWeight": "600"
+      }
+    },
+    "dependencieies": [
+      {
+        "name": "ErrorFormatter",
+        "description": "Utility component for formatting errors"
+      },
+      {
+        "name": "ValidationEngine",
+        "description": "Business logic for validation rules"
+      }
+    ],
+    "testingRequirements": {
+      "unitTests": [
+        "Required field validation",
+        "Email format validation",
+        "Maximum length validation",
+        "Value update on change",
+        "Error message display"
+      ],
+      "integrationTests": [
+        "Parent component data binding",
+        "Form submission with invalid input",
+        "Form submission with valid input"
+      ],
+      "testCoverage": "100%"
+    },
+    "documentation": {
+      "usageExample": "Include(FormInput, {Label: \"Email\", Type: \"email\", Required: true})",
+      "relatedComponents": [
+        "FormSelect",
+        "FormValidator",
+        "FormSubmit"
+      ],
+      "compatibleVersions": "Power Apps v3.0+"
+    }
+  }
+}
